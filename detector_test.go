@@ -225,6 +225,29 @@ func TestStartCloseWithMockURL(t *testing.T) {
 	}
 }
 
+func TestNewFromConfig(t *testing.T) {
+	w := 1000
+	d, err := netident.NewFromConfig(netident.Config{
+		Version: 1,
+		Providers: []netident.Provider{{
+			ID:       "googlebot",
+			Name:     "Google Bot",
+			Category: netident.CategoryBot,
+			Rules: netident.Rules{
+				PTR: []netident.StringRule{{Match: "*.googlebot.com", Weight: &w}},
+			},
+		}},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	result := d.Identify(netident.Input{PTR: "crawl-66-249-79-1.googlebot.com"})
+	if result.ProviderID != "googlebot" {
+		t.Fatalf("got %q", result.ProviderID)
+	}
+}
+
 func TestEmbeddedDefaultConfig(t *testing.T) {
 	d, err := netident.New()
 	if err != nil {

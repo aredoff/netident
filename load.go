@@ -30,19 +30,25 @@ func NewFromFile(path string, opts ...Option) (*Detector, error) {
 	return NewFromJSON(bytes.NewReader(data), opts...)
 }
 
-func NewFromJSON(r io.Reader, opts ...Option) (*Detector, error) {
-	o := applyOptions(opts)
+func NewFromConfig(cfg Config, opts ...Option) (*Detector, error) {
+	return buildDetector(cfg, applyOptions(opts))
+}
 
+func NewFromJSON(r io.Reader, opts ...Option) (*Detector, error) {
 	data, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg databaseConfig
+	var cfg Config
 	if err := json.Unmarshal(data, &cfg); err != nil {
 		return nil, fmt.Errorf("decode config: %w", err)
 	}
 
+	return buildDetector(cfg, applyOptions(opts))
+}
+
+func buildDetector(cfg Config, o options) (*Detector, error) {
 	if cfg.Version != 1 {
 		return nil, fmt.Errorf("unsupported config version %d", cfg.Version)
 	}
@@ -77,7 +83,7 @@ func NewFromJSON(r io.Reader, opts ...Option) (*Detector, error) {
 	return d, nil
 }
 
-func normalizeDefaults(d defaultsConfig) defaultsConfig {
+func normalizeDefaults(d Defaults) Defaults {
 	if d.MinScore <= 0 {
 		d.MinScore = 1
 	}
@@ -97,7 +103,7 @@ func resolveWeight(w *int, defaultWeight int) (int, error) {
 	return *w, nil
 }
 
-func validateConfig(cfg *databaseConfig, defaults defaultsConfig) error {
+func validateConfig(cfg *Config, defaults Defaults) error {
 	seen := make(map[string]struct{}, len(cfg.Providers))
 	for _, p := range cfg.Providers {
 		if p.ID == "" {
@@ -120,7 +126,7 @@ func validateConfig(cfg *databaseConfig, defaults defaultsConfig) error {
 	return nil
 }
 
-func validateRules(providerID string, rules *rulesConfig, defaults defaultsConfig) error {
+func validateRules(providerID string, rules *Rules, defaults Defaults) error {
 	for _, r := range rules.PTR {
 		if err := validateStringRule(providerID, "ptr", r, defaults); err != nil {
 			return err
@@ -185,7 +191,7 @@ func validateRules(providerID string, rules *rulesConfig, defaults defaultsConfi
 	return nil
 }
 
-func validateStringRule(providerID, field string, r stringRuleJSON, defaults defaultsConfig) error {
+func validateStringRule(providerID, field string, r StringRule, defaults Defaults) error {
 	if r.Match == "" {
 		return fmt.Errorf("provider %q: %s match is required", providerID, field)
 	}
@@ -198,7 +204,7 @@ func validateStringRule(providerID, field string, r stringRuleJSON, defaults def
 	return nil
 }
 
-func compileProviders(cfg *databaseConfig, defaults defaultsConfig) ([]*compiledProvider, []*urlSource, error) {
+func compileProviders(cfg *Config, defaults Defaults) ([]*compiledProvider, []*urlSource, error) {
 	var providers []*compiledProvider
 	var allSources []*urlSource
 
