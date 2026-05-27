@@ -213,6 +213,12 @@ func TestStartCloseWithMockURL(t *testing.T) {
 		t.Fatalf("unexpected result: %+v", result)
 	}
 
+	ip6 := net.ParseIP("2001:4860:4801:15::1")
+	result = d.Identify(netident.Input{IP: ip6})
+	if !result.OK || result.Score != 900 {
+		t.Fatalf("unexpected ipv6 result: %+v", result)
+	}
+
 	cancel()
 	if err := d.Close(); err != nil {
 		t.Fatal(err)

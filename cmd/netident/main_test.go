@@ -1,6 +1,25 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+func TestResolveCacheDirDefault(t *testing.T) {
+	got := resolveCacheDir("")
+	want := filepath.Join(os.TempDir(), "netident-cache")
+	if got != want {
+		t.Fatalf("got %q, want %q", got, want)
+	}
+}
+
+func TestResolveCacheDirCustom(t *testing.T) {
+	got := resolveCacheDir("/var/cache/netident")
+	if got != "/var/cache/netident" {
+		t.Fatalf("got %q", got)
+	}
+}
 
 func TestValidateConfigFile(t *testing.T) {
 	if err := validateConfigFile("../../testdata/providers_minimal.json", ""); err != nil {

@@ -62,7 +62,7 @@ Flags:
 | `-asn-mail` | ASN abuse email |
 | `-validate` | Validate `providers.json`, load config, and run a probe identify |
 | `-config` | Path to custom `providers.json` (default: embedded production config) |
-| `-cache-dir` | Directory for network URL cache |
+| `-cache-dir` | Directory for network URL cache (default: `$TMPDIR/netident-cache`) |
 | `-version` | Print version and exit |
 
 At least one input flag is required for identify mode. `-validate` runs standalone and does not require input flags.

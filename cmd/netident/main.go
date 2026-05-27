@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"syscall"
 
@@ -25,7 +26,7 @@ func main() {
 	showVersion := flag.Bool("version", false, "print version and exit")
 	validatePath := flag.String("validate", "", "validate providers.json and exit")
 	configPath := flag.String("config", "", "path to providers.json (default: embedded production config)")
-	cacheDir := flag.String("cache-dir", "", "directory for network URL cache")
+	cacheDir := flag.String("cache-dir", "", "directory for network URL cache (default: $TMPDIR/netident-cache)")
 	ipStr := flag.String("ip", "", "IP address")
 	ptr := flag.String("ptr", "", "PTR record")
 	netname := flag.String("netname", "", "WHOIS netname")
@@ -126,9 +127,8 @@ func run(opts runOptions) error {
 }
 
 func newDetector(configPath, cacheDir string) (*netident.Detector, error) {
-	var opts []netident.Option
-	if cacheDir != "" {
-		opts = append(opts, netident.WithCacheDir(cacheDir))
+	opts := []netident.Option{
+		netident.WithCacheDir(resolveCacheDir(cacheDir)),
 	}
 
 	if configPath == "" {
@@ -136,6 +136,13 @@ func newDetector(configPath, cacheDir string) (*netident.Detector, error) {
 	}
 
 	return netident.NewFromFile(configPath, opts...)
+}
+
+func resolveCacheDir(cacheDir string) string {
+	if cacheDir != "" {
+		return cacheDir
+	}
+	return filepath.Join(os.TempDir(), "netident-cache")
 }
 
 func validateConfigFile(path, cacheDir string) error {

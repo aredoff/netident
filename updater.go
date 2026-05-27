@@ -26,6 +26,8 @@ func (d *Detector) Start(ctx context.Context) error {
 	d.stopCh = make(chan struct{})
 	d.doneCh = make(chan struct{})
 
+	d.fetchStaleSources()
+
 	go d.runUpdater(ctx)
 	return nil
 }
@@ -76,8 +78,6 @@ func (d *Detector) Ready(ctx context.Context) error {
 
 func (d *Detector) runUpdater(ctx context.Context) {
 	defer close(d.doneCh)
-
-	d.fetchStaleSources()
 
 	ticker := time.NewTicker(updaterTickInterval)
 	defer ticker.Stop()
