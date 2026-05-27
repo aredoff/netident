@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "defaults": {
+    "min_score": 1,
+    "rule_weight": 10
+  },
+  "providers": [
+    {
+      "id": "googlebot",
+      "name": "Google Bot",
+      "category": "bot",
+      "rules": {
+        "ptr": [
+          {"match": "*.googlebot.com", "weight": 1000}
+        ],
+        "networks": [
+          {"match": "66.249.64.0/19", "weight": 900}
+        ]
+      }
+    },
+    {
+      "id": "gcp",
+      "name": "Google Cloud",
+      "category": "cloud",
+      "rules": {
+        "netname": [
+          {"match": "*GOOGLE-CLOUD*", "weight": 5}
+        ],
+        "ptr": [
+          {"match": "*.googleusercontent.com", "weight": 50}
+        ]
+      }
+    },
+    {
+      "id": "hetzner",
+      "name": "Hetzner",
+      "category": "hosting",
+      "rules": {
+        "ptr": [
+          {"match": "*.your-server.de"}
+        ],
+        "netname": [
+          {"match": "*HETZNER*"}
+        ]
+      }
+    }
+  ]
+}

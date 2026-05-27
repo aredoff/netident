@@ -1,0 +1,337 @@
+{
+  "version": 1,
+  "defaults": {
+    "min_score": 1,
+    "rule_weight": 10
+  },
+  "providers": [
+    {
+      "id": "googlebot",
+      "name": "Google Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.googlebot.com", "weight": 1000}
+        ],
+        "network_urls": [
+          {
+            "url": "https://developers.google.com/static/search/apis/ipranges/googlebot.json",
+            "format": "google_prefixes",
+            "weight": 900,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "bingbot",
+      "name": "Bing Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.search.msn.com", "weight": 1000}
+        ],
+        "network_urls": [
+          {
+            "url": "https://www.bing.com/toolbox/bingbot.json",
+            "format": "google_prefixes",
+            "weight": 900,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "applebot",
+      "name": "Apple Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.applebot.apple.com", "weight": 1000}
+        ],
+        "network_urls": [
+          {
+            "url": "https://search.developer.apple.com/applebot.json",
+            "format": "google_prefixes",
+            "weight": 900,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "yandexbot",
+      "name": "Yandex Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.yandex.ru", "weight": 1000},
+          {"match": "*.yandex.net", "weight": 1000},
+          {"match": "*.yandex.com", "weight": 1000}
+        ],
+        "asn": [
+          {"match": 13238, "weight": 100},
+          {"match": 208722, "weight": 100},
+          {"match": 212066, "weight": 100}
+        ]
+      }
+    },
+    {
+      "id": "baiduspider",
+      "name": "Baidu Spider",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.baidu.com", "weight": 1000},
+          {"match": "*.baidu.jp", "weight": 1000},
+          {"match": "*.crawl.baidu.com", "weight": 1000},
+          {"match": "*.crawl.baidu.jp", "weight": 1000}
+        ],
+        "asn": [
+          {"match": 38365, "weight": 100},
+          {"match": 55967, "weight": 100}
+        ]
+      }
+    },
+    {
+      "id": "duckduckbot",
+      "name": "DuckDuckGo Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.duckduckgo.com", "weight": 1000}
+        ],
+        "asn": [
+          {"match": 54113, "weight": 100}
+        ]
+      }
+    },
+    {
+      "id": "yahoo-slurp",
+      "name": "Yahoo Slurp",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.crawl.yahoo.net", "weight": 1000},
+          {"match": "*.crawl.yahoo.com", "weight": 1000}
+        ]
+      }
+    },
+    {
+      "id": "gptbot",
+      "name": "OpenAI GPTBot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "network_urls": [
+          {
+            "url": "https://openai.com/gptbot.json",
+            "format": "google_prefixes",
+            "weight": 900,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "perplexitybot",
+      "name": "Perplexity Bot",
+      "category": "bot",
+      "enabled": true,
+      "rules": {
+        "network_urls": [
+          {
+            "url": "https://www.perplexity.ai/perplexitybot.json",
+            "format": "google_prefixes",
+            "weight": 900,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "gcp",
+      "name": "Google Cloud",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.googleusercontent.com", "weight": 50},
+          {"match": "*.cloud.google.com", "weight": 50}
+        ],
+        "network_urls": [
+          {
+            "url": "https://www.gstatic.com/ipranges/cloud.json",
+            "format": "google_prefixes",
+            "weight": 80,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ],
+        "netname": [
+          {"match": "*GOOGLE-CLOUD*", "weight": 5},
+          {"match": "GOOGL-*", "weight": 5}
+        ],
+        "asn": [
+          {"match": 15169, "weight": 3},
+          {"match": 396982, "weight": 3}
+        ]
+      }
+    },
+    {
+      "id": "aws",
+      "name": "Amazon AWS",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.amazonaws.com", "weight": 10},
+          {"match": "*.compute.amazonaws.com", "weight": 50},
+          {"match": "*.awsglobalaccelerator.com", "weight": 10}
+        ],
+        "netname": [
+          {"match": "*AMAZON*", "weight": 10},
+          {"match": "*AWS*", "weight": 10}
+        ],
+        "netmail": [
+          {"match": "*@amazonaws.com", "weight": 20}
+        ],
+        "asn": [
+          {"match": 16509, "weight": 10},
+          {"match": 14618, "weight": 10}
+        ]
+      }
+    },
+    {
+      "id": "azure",
+      "name": "Microsoft Azure",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.cloudapp.net", "weight": 50},
+          {"match": "*.azure.com", "weight": 50},
+          {"match": "*.azurewebsites.net", "weight": 50}
+        ],
+        "netname": [
+          {"match": "*MICROSOFT*", "weight": 10},
+          {"match": "*AZURE*", "weight": 10}
+        ],
+        "asn": [
+          {"match": 8075, "weight": 10},
+          {"match": 8068, "weight": 10}
+        ]
+      }
+    },
+    {
+      "id": "oracle-cloud",
+      "name": "Oracle Cloud",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.oraclecloud.com", "weight": 50}
+        ],
+        "netname": [
+          {"match": "*ORACLECLOUD*", "weight": 10},
+          {"match": "*ORACLE-*", "weight": 10}
+        ],
+        "asn": [
+          {"match": 31898, "weight": 10},
+          {"match": 14339, "weight": 10}
+        ]
+      }
+    },
+    {
+      "id": "alibaba-cloud",
+      "name": "Alibaba Cloud",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.aliyuncs.com", "weight": 50},
+          {"match": "*.alibabacloud.com", "weight": 50}
+        ],
+        "netname": [
+          {"match": "*ALIBABA*", "weight": 10},
+          {"match": "*ALICLOUD*", "weight": 10}
+        ],
+        "asn": [
+          {"match": 45102, "weight": 10},
+          {"match": 37963, "weight": 10}
+        ]
+      }
+    },
+    {
+      "id": "digitalocean",
+      "name": "DigitalOcean",
+      "category": "cloud",
+      "enabled": true,
+      "rules": {
+        "ptr": [
+          {"match": "*.digitaloceanspaces.com", "weight": 50}
+        ],
+        "netname": [
+          {"match": "*DIGITALOCEAN*", "weight": 10}
+        ],
+        "network_urls": [
+          {
+            "url": "https://www.digitalocean.com/geo/google.csv",
+            "format": "cidr_list",
+            "weight": 80,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ],
+        "asn": [
+          {"match": 14061, "weight": 10}
+        ]
+      }
+    },
+    {
+      "id": "cloudflare",
+      "name": "Cloudflare",
+      "category": "cdn",
+      "enabled": true,
+      "rules": {
+        "network_urls": [
+          {
+            "url": "https://www.cloudflare.com/ips-v4",
+            "format": "cidr_list",
+            "weight": 80,
+            "update_interval": 86400,
+            "timeout": 30
+          },
+          {
+            "url": "https://www.cloudflare.com/ips-v6",
+            "format": "cidr_list",
+            "weight": 80,
+            "update_interval": 86400,
+            "timeout": 30
+          }
+        ],
+        "netname": [
+          {"match": "*CLOUDFLARENET*", "weight": 10}
+        ],
+        "netmail": [
+          {"match": "*@cloudflare.com", "weight": 10}
+        ],
+        "asn": [
+          {"match": 13335, "weight": 10}
+        ]
+      }
+    }
+  ]
+}
